@@ -31,13 +31,13 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "http://localhost:3000/dashboard",
+      url: `${process.env.API_URL}/dashboard`,
       icon: ChartArea ,
       isActive: true,
     },
     {
       title: "Product",
-      url: "http://localhost:3000/dashboard/products",
+      url: `${process.env.API_URL}/dashboard/products`,
       icon: Boxes,
       // items: [
       //   {
@@ -52,7 +52,7 @@ const data = {
     },
     {
       title: "Transaction",
-      url: "http://localhost:3000/dashboard/transaction",
+      url: `${process.env.API_URL}/dashboard/transaction`,
       icon: ShoppingCartIcon,
       // items: [
       //   {
@@ -71,7 +71,7 @@ const data = {
     },
     {
       title: "Finance",
-      url: "http://localhost:3000/dashboard/finance",
+      url: `${process.env.API_URL}/dashboard/finance`,
       icon: CircleDollarSignIcon,
       // items: [
       //   {
@@ -111,7 +111,7 @@ const data = {
 export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const {data:session} = useSession()
   // console.log("dataUser",session?.user)
-  const username = session?.user?.username || ""
+  const username = session?.user?.name || ""
   const pecahNama = username.split(" ")
   let letter = ""
   // console.log("data", pecahNama)

@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { SquarePen } from "lucide-react";
+import LoaderCircleRound from "@/components/loader/LoaderCircleRound";
 // import { Button } from "@/components/ui/button"
 export type TypeDataColumn = {
   column: number;
@@ -48,17 +49,17 @@ function TableComp({ dataColumn, dataRow, titleIn, loading, countUpdate, setCoun
   const [dataEdit, setDataEdit] = useState<ProductList | null>(null);
   const [loadingUpdate, setLoadingUpdate] = useState(false)
 
-  console.log("dataColumn", dataRow);
+  // console.log("dataColumn", dataRow);
   const dataCol = dataColumn;
   // dataCol.sort((a: TypeDataColumn, b: TypeDataColumn)=> a.column - b.column)
 
   const handleUpdate = async (event: FormEvent<HTMLFormElement>) => {
-    console.log("start", dataEdit)
+    // console.log("start", dataEdit)
     event.preventDefault()
       setLoadingUpdate(true)
       try {
         const formData = new FormData(event.currentTarget)
-        console.log("formData", formData.get("product"))
+        // console.log("formData", formData.get("product"))
         const response = await fetch('/api/v1/products/update-product', {
           method: 'POST',
           headers: {
@@ -71,24 +72,24 @@ function TableComp({ dataColumn, dataRow, titleIn, loading, countUpdate, setCoun
             dataUpdate: `product= '${formData.get("product")}' , merek= '${formData.get("merek")}' , stock= '${formData.get("stock")}' , price= '${formData.get("price")}'`
           }),
         })
-   
+  
         if (!response.ok) {
           throw new Error('Failed to submit the data. Please try again.')
         }
-   
+  
         // Handle response if necessary
-        const data = await response.json()
-        console.log("data", data)
+        const _data = await response.json()
+        // console.log("data", data)
         setCountUpdate(countUpdate + 1)
         setOpenEdit(false)
-      } catch (error: any) {
+      } catch (_error: any) {
         // Capture the error message to display to the user
         // setError(error.message)
-        console.log(error)
+        // console.log(error)
       } finally {
         setLoadingUpdate(false)
       }
- 
+
   }
 
   return (
@@ -139,12 +140,10 @@ function TableComp({ dataColumn, dataRow, titleIn, loading, countUpdate, setCoun
         <TableHeader>
           <TableRow key={titleIn}>
             {dataCol.map((item: any) => (
-              <>
                 <TableHead className=" uppercase" key={item.title}>
                   {" "}
                   {item.title}{" "}
                 </TableHead>
-              </>
             ))}
           </TableRow>
         </TableHeader>
@@ -152,10 +151,8 @@ function TableComp({ dataColumn, dataRow, titleIn, loading, countUpdate, setCoun
           {dataRow ? (
             <>
               {dataRow.map((item: any, index: any) => (
-                <>
                   <TableRow key={index}>
                     {dataCol.map((head: any) => (
-                      <>
                         <TableCell key={head.title}>
                           {head.type == "text" && <>{item[head.title]}</>}
                           {head.type == "boolean" && <></>}
@@ -164,10 +161,11 @@ function TableComp({ dataColumn, dataRow, titleIn, loading, countUpdate, setCoun
                               <Dialog>
                                 <DialogTrigger asChild>
                                   <Image
-                                    src={"/images/" + item[head.title]}
+                                    src={process.env.PUBLIC_SRC+"/images/" + item[head.title]}
                                     alt="imageProduct"
                                     width={50}
                                     height={50}
+                                    unoptimized
                                   />
                                 </DialogTrigger>
                                 <DialogContent className="w-[60dvh] h-[60dvh]">
@@ -176,10 +174,11 @@ function TableComp({ dataColumn, dataRow, titleIn, loading, countUpdate, setCoun
                                   </DialogHeader>
                                   <div className="w-[50dvh] h-[50dvh] flex items-center justify-center">
                                     <Image
-                                      src={"/images/" + item[head.title]}
+                                      src={process.env.PUBLIC_SRC+"/images/" + item[head.title]}
                                       alt="imageProduct"
                                       fill={true}
                                       className="w-full h-full max-w-[50dvh] max-h-[50dvh] mt-10 mx-auto"
+                                      unoptimized
                                     />
                                   </div>
                                 </DialogContent>
@@ -200,10 +199,8 @@ function TableComp({ dataColumn, dataRow, titleIn, loading, countUpdate, setCoun
                             </>
                           )}
                         </TableCell>
-                      </>
                     ))}
                   </TableRow>
-                </>
               ))}
             </>
           ) : (
@@ -212,12 +209,11 @@ function TableComp({ dataColumn, dataRow, titleIn, loading, countUpdate, setCoun
                 <TableCell colSpan={dataCol.length} className=" h-48 text-center relative">
                   {loading && (
                     <>
-                      <div className="absolute w-full h-full flex justify-center items-center top-0 left-0">
-                        <div className="rounded-md h-20 w-20 border-4 border-t-4 border-blue-500 animate-spin"></div>
-                      </div>
+                      <div className="  z-50 w-full h-full flex justify-center items-center">
+                                          <LoaderCircleRound color={'#000000'} />
+                                      </div>
                     </>
                   )}
-                  No results.
                 </TableCell>
               </TableRow>
             </>

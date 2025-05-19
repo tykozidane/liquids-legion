@@ -95,9 +95,9 @@ function ProductsPage(session: any) {
       })
         .then((item: any) => item.json())
         .then((response: any) => {
-          console.log("Res", response);
+          // console.log("Res", response);
           const datanya = response.data;
-          console.log("Datanya", datanya);
+          // console.log("Datanya", datanya);
           setDataTable(datanya);
           setDataFetch(datanya);
           setLoading(true);
@@ -107,7 +107,7 @@ function ProductsPage(session: any) {
   }, [countUpdate, session]);
 
   const handleSearch = (e: string) => {
-    console.log("Search", e);
+    // console.log("Search", e);
     if (Array.isArray(dataFetch)) {
       const search = RegExp(`.*${e.toLowerCase().split("").join(".*")}.*`);
       const newData = dataFetch
@@ -115,7 +115,7 @@ function ProductsPage(session: any) {
         .map((item: any) => {
           return item;
         });
-      console.log("NewData", newData);
+      // console.log("NewData", newData);
       setDataTable(newData);
     }
   };
@@ -127,11 +127,11 @@ function ProductsPage(session: any) {
         });
         setDataTable(sortedData);
       } else if (sort == "stock") {
-        console.log("Sort", sort);
+        // console.log("Sort", sort);
         const sortedData = [...dataTable].sort((a, b) => b.stock - a.stock);
         setDataTable(sortedData);
       } else if (sort == "pricy") {
-        console.log("Sort", sort);
+        // console.log("Sort", sort);
         const sortedData = [...dataTable].sort((a, b) => b.price - a.price);
         setDataTable(sortedData);
       }

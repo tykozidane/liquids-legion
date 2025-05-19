@@ -18,6 +18,7 @@ import ProductsPage from "./ProductsPage";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
+  // console.log("SESSION", session)
   return (
     <>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -27,7 +28,7 @@ export default async function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="http://localhost:3000/dashboard/products">
+                  <BreadcrumbLink href="https://liquidslegion.tykozidane.com/dashboard/products">
                   <BreadcrumbPage>Products</BreadcrumbPage>
                   </BreadcrumbLink>
                 </BreadcrumbItem>

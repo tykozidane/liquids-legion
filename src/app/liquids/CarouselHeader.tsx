@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 // }
 function CarouselHeader({dataCarousel}:any) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log("DataCarousel", dataCarousel[0])
+  // console.log("DataCarousel", dataCarousel[0])
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % dataCarousel.length);

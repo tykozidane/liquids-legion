@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { SquarePen } from "lucide-react";
 import { format } from "date-fns";
+import LoaderCircleRound from "./loader/LoaderCircleRound";
 // import { Button } from "@/components/ui/button"
 export type TypeDataColumn = {
   column: number;
@@ -55,13 +56,11 @@ function TableComponent({ dataColumn, dataRow, titleIn, loading, setDataEdit, se
         {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow key={titleIn}>
-            {dataCol.map((item: any) => (
-              <>
-                <TableHead className=" uppercase" key={item.title}>
+            {dataCol.map((item: any, index:any) => (
+                <TableHead className=" uppercase" key={index}>
                   {" "}
                   {item.header}{" "}
                 </TableHead>
-              </>
             ))}
           </TableRow>
         </TableHeader>
@@ -69,10 +68,8 @@ function TableComponent({ dataColumn, dataRow, titleIn, loading, setDataEdit, se
           {dataRow ? (
             <>
               {dataRow.map((item: any, index: any) => (
-                <>
                   <TableRow key={index} className="">
                     {dataCol.map((head: any) => (
-                      <>
                         <TableCell key={head.title}>
                           {head.type == "text" && <>{item[head.title]}</>}
                           {head.type == "boolean" && <></>}
@@ -81,10 +78,10 @@ function TableComponent({ dataColumn, dataRow, titleIn, loading, setDataEdit, se
                             {item[head.title].toString()}
                           </>}
                           {head.type == "items" && <div className="flex flex-col">
-                            {item[head.title].map((dataItems:any) =>(<>
-                            <div className={head.classItem}>
-                              {head.itemList.map((dataHead:any)=>(<>
-                                <div className={dataHead.className}>
+                            {item[head.title].map((dataItems:any, index:any) =>(
+                            <div className={head.classItem} key={index}>
+                              {head.itemList.map((dataHead:any, index2:any)=>(
+                                <div className={dataHead.className} key={index2}>
                                   {dataHead.type == "image" && <>
                                   <div className="separator-custom h-10 w-1"></div>
                                     <Image
@@ -97,14 +94,16 @@ function TableComponent({ dataColumn, dataRow, titleIn, loading, setDataEdit, se
                                   {dataHead.type == "text" && <>
                                     {dataItems[dataHead.title]}
                                   </>}
+                                  {dataHead.type == "peace" && <>
+                                  x {dataItems[dataHead.title]}
+                                  </>}
                                   {dataHead.type == "price" && <>
                                     {dataItems[dataHead.title]}
                           <div className="separator-custom h-10 ml-3"></div>
                                   </>}
                                 </div>
-                              </>))}
-                            </div>
-                            </>))}
+                              ))}
+                            </div>))}
                             
                           </div>}
                           {head.type == "image" && (
@@ -148,12 +147,10 @@ function TableComponent({ dataColumn, dataRow, titleIn, loading, setDataEdit, se
                             </>
                           )}
                         </TableCell>
-                      </>
                     ))}
                     
                   </TableRow>
                   
-                </>
               ))}
             </>
           ) : (
@@ -162,12 +159,11 @@ function TableComponent({ dataColumn, dataRow, titleIn, loading, setDataEdit, se
                 <TableCell colSpan={dataCol.length} className=" h-48 text-center relative">
                   {loading && (
                     <>
-                      <div className="absolute w-full h-full flex justify-center items-center top-0 left-0">
-                        <div className="rounded-md h-20 w-20 border-4 border-t-4 border-blue-500 animate-spin"></div>
-                      </div>
+                      <div className="  z-50 w-full h-full flex justify-center items-center">
+                                          <LoaderCircleRound color={'#000000'} />
+                                      </div>
                     </>
                   )}
-                  No results.
                 </TableCell>
               </TableRow>
             </>

@@ -46,12 +46,12 @@ function AddFinance({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
 
         // handle the error
         // if (!res.ok) throw new Error(await res.text())
-      } catch (e: any) {
+      } catch (_e: any) {
         // Handle errors here
-        console.error(e)
+        // console.error(e)
       }
     }
-    console.log(session)
+    // console.log(session)
     async function saveSubmit(event: FormEvent<HTMLFormElement>) {
       event.preventDefault()
       setIsLoading(true)
@@ -59,7 +59,7 @@ function AddFinance({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
 
       try {
         const formData = new FormData(event.currentTarget)
-        console.log("formData", formData.get("product"))
+        // console.log("formData", formData.get("product"))
         const response = await fetch('/api/v1/finance/input-data', {
           method: 'POST',
           headers: {
@@ -83,14 +83,14 @@ function AddFinance({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
         }
    
         // Handle response if necessary
-        const data = await response.json()
-        console.log("data", data)
+        const _data = await response.json()
+        // console.log("data", data)
         setCountUpdate(countUpdate + 1)
         setOpenAdd(false)
-      } catch (error: any) {
+      } catch (_error: any) {
         // Capture the error message to display to the user
         // setError(error.message)
-        console.log(error)
+        // console.log(error)
       } finally {
         setIsLoading(false)
       }
@@ -101,7 +101,7 @@ function AddFinance({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
         <div className='w-full h-full max-w-[20dvh] max-h-[20dvh]'>
             {imageSave != "" && (
             <Image 
-                      src={"/images/"+imageSave}
+                      src={process.env.PUBLIC_SRC+"/images/"+imageSave}
                       alt="imageRecipt"
                       fill={true}
                       className="w-full h-full max-w-[20dvh] max-h-[20dvh] mt-16 mx-auto rounded-lg object-contain" 
@@ -113,8 +113,20 @@ function AddFinance({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
             <Input
                 type="file"
                 name="file"
-                onChange={(e) => setFile(e.target.files?.[0])}
+                // onChange={(e) => setFile(e.target.files?.[0])}
+                onChange={(e) => {
+                  const selectedFile = e.target.files?.[0];
+                  if (selectedFile) {
+                    if (selectedFile.size > 500 * 1024) {
+                      alert("File size must be less than 500KB.");
+                      e.target.value = ""; // reset the input
+                      return;
+                    }
+                    setFile(selectedFile);
+                  }
+                }}
                 className='rounded-lg mr-1'
+                required
             />
             <Button type="submit" className=' rounded-lg px-3 '>Upload Recipt </Button>
         </form>
@@ -140,11 +152,11 @@ function AddFinance({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
           </div>
           <div className="grid w-full items-center gap-1.5 mb-3">
               <Label htmlFor="description">Description</Label>
-              <Input id="description" name='description' type="text" placeholder='Restock'/>
+              <Input id="description" name='description' type="text" placeholder='Restock' required/>
           </div>
           <div className="grid w-full  items-center gap-1.5 mb-3"> 
               <Label htmlFor="amount">Amount</Label>
-              <Input id="amount" name='amount' type="number" placeholder='100000'/>
+              <Input id="amount" name='amount' type="number" placeholder='100000' required/>
           </div>
           <div className="grid w-full  items-center gap-1.5 mb-3">
             <Label htmlFor="from">From Where</Label>

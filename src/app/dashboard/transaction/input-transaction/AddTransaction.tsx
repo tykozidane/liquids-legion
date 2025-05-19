@@ -61,7 +61,7 @@ function AddTransaction({ session }: any) {
 
     try {
       const formData = new FormData(event.currentTarget);
-      console.log("formData", formData.get("product"));
+      // console.log("formData", formData.get("product"));
       const response = await fetch("/api/v1/transaction/input-transaction", {
         method: "POST",
         headers: {
@@ -89,12 +89,12 @@ function AddTransaction({ session }: any) {
       }
 
       // Handle response if necessary
-      const data = await response.json();
-      console.log("data", data);
-    } catch (error: any) {
+      const _data = await response.json();
+      // console.log("data", data);
+    } catch (_error: any) {
       // Capture the error message to display to the user
       // setError(error.message)
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsLoading(false);
       redirect("/dashboard/transaction");
@@ -115,9 +115,9 @@ function AddTransaction({ session }: any) {
       })
         .then((item: any) => item.json())
         .then((response: any) => {
-          console.log("Res product", response);
+          // console.log("Res product", response);
           const datanya = response.data;
-          console.log("Data Productnya", datanya);
+          // console.log("Data Productnya", datanya);
           setDataProduct(datanya);
         });
     };
@@ -156,6 +156,7 @@ function AddTransaction({ session }: any) {
     } else {
       setTotalPrice(tempPrice);
     }
+    // console.log("Price", priceAllItem)
   }, [countUpdate]);
   return (
     <main className="flex-col items-start p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -163,18 +164,15 @@ function AddTransaction({ session }: any) {
         <form onSubmit={saveSubmit} className="w-full">
           <div className="grid w-full items-center gap-1.5 mb-3">
             <Label htmlFor="date">Date</Label>
-            <Input id="date" name="date" type="datetime-local" className="w-full" />
+            <Input id="date" name="date" type="datetime-local" className="w-full" required  />
           </div>
           <div>
             <Label>Item</Label>
           </div>
           <div
             className="w-full flex flex-col items- justify-center my-2"
-            key={"ListItemAfterInput"}
-            // id="ListItemAfterInput"
           >
             {itemList.map((item: Items, index:any) => (
-              <>
                 <div
                   className="flex items-center justify-between border px-2 py-1 rounded-lg"
                   key={"div" + index + item.product}
@@ -189,6 +187,7 @@ function AddTransaction({ session }: any) {
                       <Minus />
                     </Button>
                     <Input
+                    
                       id={item.product}
                       className="w-fit text-center mx-3"
                       name={"peace" + item.product}
@@ -216,7 +215,6 @@ function AddTransaction({ session }: any) {
                     </Button>
                   </div>
                 </div>
-              </>
             ))}
           </div>
           <Popover open={open} onOpenChange={setOpen}>
@@ -286,7 +284,7 @@ function AddTransaction({ session }: any) {
               id="price"
               name="price"
               type="number"
-              defaultValue={priceAllItem}
+              value={priceAllItem}
               disabled
               className=" disabled:text-black disabled:opacity-100"
             />
@@ -310,7 +308,7 @@ function AddTransaction({ session }: any) {
               id="total_price"
               name="total_price"
               type="number"
-              defaultValue={totalPrice}
+              value={totalPrice}
               disabled
               className=" disabled:text-black disabled:opacity-100"
             />
@@ -339,9 +337,9 @@ function AddTransaction({ session }: any) {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="website">offline</SelectItem>
+                  <SelectItem value="offline">Offline</SelectItem>
                   <SelectItem value="website">Website</SelectItem>
-                  <SelectItem value="Tokopedia">Tokopedia</SelectItem>
+                  <SelectItem value="tokopedia">Tokopedia</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

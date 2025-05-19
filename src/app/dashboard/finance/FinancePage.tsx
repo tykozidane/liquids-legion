@@ -101,7 +101,7 @@ function FinancePage(session: any) {
       })
         .then((item: any) => item.json())
         .then((response: any) => {
-          console.log("Res", response);
+          // console.log("Res", response);
           const datanya = response.data;
         //   console.log("Datanya", datanya);
           setDataTable(datanya);
@@ -113,7 +113,7 @@ function FinancePage(session: any) {
   }, [countUpdate, session]);
 
   const handleSearch = (e: string) => {
-    console.log("Search", e);
+    // console.log("Search", e);
     if (Array.isArray(dataFetch)) {
       const search = RegExp(`.*${e.toLowerCase().split("").join(".*")}.*`);
       const newData = dataFetch
@@ -121,7 +121,7 @@ function FinancePage(session: any) {
         .map((item: any) => {
           return item;
         });
-      console.log("NewData", newData);
+      // console.log("NewData", newData);
       setDataTable(newData);
     }
   };
@@ -133,7 +133,7 @@ function FinancePage(session: any) {
         });
         setDataTable(sortedData);
       } else if (sort == "amount") {
-        console.log("Sort", sort);
+        // console.log("Sort", sort);
         const sortedData = [...dataTable].sort((a, b) => b.amount - a.amount);
         setDataTable(sortedData);
       } 

@@ -20,7 +20,7 @@ export async function POST(request: Request) {
         const findUser = await query<User>(
             'select * from users where email = $1',
             [ email]
-          );
+        );
         if(findUser.length < 1){
         return NextResponse.json({status: "300", message: "Email is Not Registered", data:{}}, {status: 400})
         }

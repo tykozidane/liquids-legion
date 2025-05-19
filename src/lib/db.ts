@@ -1,11 +1,10 @@
-import { Pool } from 'pg';
+import { Pool, QueryResultRow } from 'pg';
 
-// Create a connection pool
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Add this in your `.env` file
+  connectionString: process.env.DATABASE_URL,
 });
 
-export async function query<T>(text: string, params?: any[]): Promise<T[]> {
+export async function query<T extends QueryResultRow>(text: string, params?: any[]): Promise<T[]> {
   const client = await pool.connect();
   try {
     const result = await client.query<T>(text, params);

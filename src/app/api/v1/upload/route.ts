@@ -6,27 +6,48 @@ import { encrypt } from "@/lib/useAes256";
 
 export const POST = async (req: Request) => {
   const formData = await req.formData();
+  const file = formData.get("file") as File;
 
-  const file = formData.get("file");
   if (!file) {
-    return NextResponse.json({ error: "No files received." }, { status: 400 });
+    return NextResponse.json({ error: "No file received." }, { status: 400 });
+  }
+
+  // ✅ Validate file type
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+  if (!allowedTypes.includes(file.type)) {
+    return NextResponse.json(
+      { error: "The uploaded file is not a valid image." },
+      { status: 400 }
+    );
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  const filename =  file.name.replaceAll(" ", "_");
-  const splitFilename = filename.split('.')
-  const timestamp = moment().format('MMmmYYHHDDssSSS') 
-  const encryptTimestamp = await encrypt(timestamp)
-  const newFileName = encryptTimestamp  + '.' + splitFilename[splitFilename.length -1]
-  console.log(filename);
+
+  const filename = file.name.replaceAll(" ", "_");
+  const extension = path.extname(filename);
+  const timestamp = moment().format('MMmmYYHHDDssSSS');
+  const encryptedName = await encrypt(timestamp);
+  const newFileName = `${encryptedName}${extension}`;
+
   try {
     await writeFile(
-      path.join(process.cwd(), "public/images/" + newFileName),
+      path.join(process.cwd(), "public/images", newFileName),
       buffer
     );
-    return NextResponse.json({status: "00", message: "Get Data Succesfully", data:{filename: newFileName}}, {status: 200})
+
+    return NextResponse.json(
+      {
+        status: "00",
+        message: "Upload successful",
+        data: { filename: newFileName }
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    console.log("Error occured ", error);
-    return NextResponse.json({ Message: "Failed", status: 500 });
+    console.error("Upload error:", error);
+    return NextResponse.json(
+      { error: "Failed to save image." },
+      { status: 500 }
+    );
   }
 };

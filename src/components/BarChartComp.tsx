@@ -8,6 +8,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import moment from "moment";
 
 export const description = "A bar chart with a label";
 
@@ -50,11 +51,11 @@ export default function BarChartComp({
       >
         <CartesianGrid vertical={false} />
         <XAxis
-          dataKey="date"
+          dataKey="month"
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-          tickFormatter={(value) => value.slice(0, 3)}
+          tickFormatter={(value) => moment(value).format('MMM YY') }
         />
         <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
         <Bar dataKey="sales" fill="var(--color-sales)" radius={8}>

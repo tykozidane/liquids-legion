@@ -25,7 +25,7 @@ export default async function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="http://localhost:3000/dashboard">
+                  <BreadcrumbLink href="https://liquidslegion.tykozidane.com/dashboard">
                   <BreadcrumbPage>Dashboard</BreadcrumbPage>
                   </BreadcrumbLink>
                 </BreadcrumbItem>

@@ -36,12 +36,12 @@ function AddProduct({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
 
         // handle the error
         // if (!res.ok) throw new Error(await res.text())
-      } catch (e: any) {
+      } catch (_e: any) {
         // Handle errors here
-        console.error(e)
+        // console.error(e)
       }
     }
-    console.log(session)
+    // console.log(session)
     async function saveSubmit(event: FormEvent<HTMLFormElement>) {
       event.preventDefault()
       setIsLoading(true)
@@ -49,7 +49,7 @@ function AddProduct({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
 
       try {
         const formData = new FormData(event.currentTarget)
-        console.log("formData", formData.get("product"))
+        // console.log("formData", formData.get("product"))
         const response = await fetch('/api/v1/products/add-product', {
           method: 'POST',
           headers: {
@@ -73,14 +73,14 @@ function AddProduct({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
         }
    
         // Handle response if necessary
-        const data = await response.json()
-        console.log("data", data)
+        const _data = await response.json()
+        // console.log("data", data)
         setCountUpdate(countUpdate + 1)
         setOpenAdd(false)
-      } catch (error: any) {
+      } catch (_error: any) {
         // Capture the error message to display to the user
         // setError(error.message)
-        console.log(error)
+        // console.log(error)
       } finally {
         setIsLoading(false)
       }
@@ -90,17 +90,29 @@ function AddProduct({session, countUpdate, setCountUpdate, setOpenAdd}:any) {
       <div className='w-[20dvh] h-[20dvh] rounded-lg bg-slate-500 mb-3'>
         {imageSave != "" && (
             <Image 
-                      src={"/images/"+imageSave}
+                      src={process.env.PUBLIC_SRC+"/images/"+imageSave}
                       alt="imageProduct"
                       fill={true}
                       className="w-full h-full max-w-[20dvh] max-h-[20dvh] mt-10 mx-auto rounded-lg" 
+                      unoptimized 
                       />
        )} </div>
         <form onSubmit={onSubmit} className='flex mb-5'>
             <Input
                 type="file"
                 name="file"
-                onChange={(e) => setFile(e.target.files?.[0])}
+                // onChange={(e) => setFile(e.target.files?.[0])}
+                onChange={(e) => {
+                  const selectedFile = e.target.files?.[0];
+                  if (selectedFile) {
+                    if (selectedFile.size > 500 * 1024) {
+                      alert("File size must be less than 500KB.");
+                      e.target.value = ""; // reset the input
+                      return;
+                    }
+                    setFile(selectedFile);
+                  }
+                }}
                 className='rounded-lg mr-1'
             />
             <Button type="submit" className=' rounded-lg px-3 '>Upload </Button>

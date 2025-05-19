@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
         email: { label: "email", type: "text", placeholder: "jsmith" },
         password: {label: "Password", type: "password"},
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         // console.log("start")
         const res = await fetch(`${BASE_URL_API}/api/auth/login`, {
           method: "POST",
@@ -64,10 +64,10 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async redirect({ url, baseUrl }) {
+    async redirect({ url }) {
       // console.log("URL", url)
       // console.log("baseURL", baseUrl)
-      const callback = url.replace("http://localhost:3000/login?callbackUrl=","")
+      const callback = url.replace(`${BASE_URL_API}/login?callbackUrl=`,"")
       const newURL = callback.replaceAll("%2F", "/")
       // console.log("newURL", newURL)
       // Allows relative callback URLs
@@ -83,7 +83,7 @@ export const authOptions: NextAuthOptions = {
       }
       return { ...token, ...user };
     },
-    session: async ({session, token, user}) => {
+    session: async ({session, token}) => {
       // console.log("Session Callback", {session, token, user})
       return {
         ...session,

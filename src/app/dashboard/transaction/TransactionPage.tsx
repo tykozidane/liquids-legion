@@ -35,8 +35,8 @@ const dataColumn: TypeDataColumn[] = [
     header: "Items",
     title: "items",
     type: "items",
-    itemList: [{title: "image", type:"image", className: "col-span-1 flex justify-start items-center"}, {title: "product", type: "text", className: "col-span-3 flex justify-start items-center"},{title: "price", type: "price", className: "col-span-1 flex justify-end  items-center"}],
-    classItem: "grid grid-cols-5 w-full min-w-80 content-center"
+    itemList: [{title: "image", type:"image", className: "col-span-1 flex justify-start items-center"}, {title: "product", type: "text", className: "col-span-3 flex justify-start items-center"},{title: "peace", type: "peace", className: "col-span-1 flex justify-end  items-center"},{title: "price", type: "price", className: "col-span-1 flex justify-end  items-center"}],
+    classItem: "grid grid-cols-6 w-full min-w-80 content-center"
   },
   {
     column: 3,
@@ -129,14 +129,14 @@ function TransactionPage(session: any) {
       })
         .then((item: any) => item.json())
         .then((response: any) => {
-          console.log("Res", response);
+          // console.log("Res", response);
           if(response.status !== '00'){
             setDataTable([]);
           setDataFetch([]);
             alert(response.message);
           } else {
             const datanya = response.data;
-          console.log("Datanya", datanya);
+          // console.log("Datanya", datanya);
           setDataTable(datanya);
           setDataFetch(datanya);
           }
@@ -149,7 +149,7 @@ function TransactionPage(session: any) {
   }, [ session, date]);
 
   const handleSearch = (e: string) => {
-    console.log("Search", e);
+    // console.log("Search", e);
     if (Array.isArray(dataFetch)) {
       const search = RegExp(`.*${e.toLowerCase().split("").join(".*")}.*`);
       const newData = dataFetch
@@ -157,7 +157,7 @@ function TransactionPage(session: any) {
         .map((item: any) => {
           return item;
         });
-      console.log("NewData", newData);
+      // console.log("NewData", newData);
       setDataTable(newData);
     }
   };
@@ -169,7 +169,7 @@ function TransactionPage(session: any) {
         });
         setDataTable(sortedData);
       }  else if (sort == "pricy") {
-        console.log("Sort", sort);
+        // console.log("Sort", sort);
         const sortedData = [...dataTable].sort((a, b) => b.price - a.price);
         setDataTable(sortedData);
       }
